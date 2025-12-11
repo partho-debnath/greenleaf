@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
+from base.forms import BaseForm
 from users.models import User
 
 
@@ -66,3 +67,25 @@ class UserChangeForm(forms.ModelForm):
             "is_active",
             "is_admin",
         ]
+
+
+class UserLoginForm(BaseForm):
+
+    email = forms.EmailField(
+        label_suffix="",
+        widget=forms.EmailInput(
+            attrs={
+                "placeholder": "you@example.com",
+            }
+        )
+    )
+    password = forms.CharField(
+        max_length=30,
+        min_length=8,
+        label_suffix="",
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "••••••••",
+            }
+        ),
+    )
