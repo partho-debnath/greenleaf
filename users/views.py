@@ -19,7 +19,6 @@ class UserLoginView(View):
             }
         )
 
-
     def post(self, request):
         form = self.user_login_form(data=request.POST)
         if form.is_valid():

@@ -136,16 +136,16 @@ class UserModelAdmin(BaseUserAdmin):
         "country_code",
     ]
 
-    @admin.display(description="Image")
-    def show_image(self, instance):
-        return instance.show_image
-
     @admin.display(description="image")
     def preview_image(self, instance):
         if not instance.image:
-            return format_html('<img src="" alt="No Image" width="20%" />')
+            return format_html(
+                '<img src="" alt="{}" width="20%" />',
+                "No Image",
+            )
         return format_html(
-            '<img src="{}" width="15%" />'.format(instance.image.url),
+            '<img src="{}" width="15%" />',
+            instance.image.url,
         )
 
 
