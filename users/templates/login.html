@@ -13,11 +13,11 @@
 
   <!-- Login Form -->
   <main class="min-h-screen flex items-center justify-center px-4 py-12">
-    <div class="w-full max-w-md">
-      <div class="bg-white rounded-xl shadow-lg p-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-        <p class="text-gray-600 mb-8">Sign in to your GreenLeaf account</p>
-        
+      <div class="w-full max-w-md">
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h1>
+            <p class="text-gray-600 dark:text-gray-400 mb-8">Sign in to your TreeShop account</p>
+
         <form class="space-y-5" method="post" action="{% url 'users:user_login' %}">
           {% csrf_token %}
           {% if login_form.non_field_errors %}
@@ -65,31 +65,18 @@
         </form>
 
         <div class="relative my-6">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
-          </div>
-          <div class="relative flex justify-center text-sm">
-            <span class="px-2 bg-white text-gray-500">Or continue with</span>
-          </div>
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-300 dark:border-gray-600"></div></div>
+          <div class="relative flex justify-center text-sm"><span class="px-2 bg-white dark:bg-gray-800 text-gray-500">Or continue with</span></div>
         </div>
 
-        <button
-          class="w-full border border-gray-300 hover:bg-gray-80 text-gray-900 font-semibold py-2.5 rounded-lg transition duration-200 flex items-center justify-center gap-2"
-        >
-          <img
-            src="https://cdn-icons-png.flaticon.com/32/300/300221.png"
-            alt="Google"
-          />
+        <button class="w-full border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold py-2.5 rounded-lg transition duration-200 flex items-center justify-center gap-2">
+          <img src="https://cdn-icons-png.flaticon.com/32/300/300221.png" alt="Google"/>
           <span>Login with Google</span>
         </button>
 
-        <p class="mt-6 text-center text-gray-600">
+        <p class="mt-6 text-center text-gray-600 dark:text-gray-400">
           Don't have an account?
-          <a
-            href="registration.html"
-            class="text-emerald-600 hover:text-emerald-700 font-semibold"
-            >Sign up</a
-          >
+          <a href="registration.html" class="text-emerald-600 hover:text-emerald-700 font-semibold">Sign up</a>
         </p>
       </div>
     </div>
