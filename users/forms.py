@@ -2,42 +2,83 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
-from base.forms import BaseForm
+from base.forms import PHONE_NUMBER_CSS_CLASS, BaseForm, BaseModelForm
 from users.models import User
 
 
-class UserCreationForm(forms.ModelForm):
+class UserCreationForm(BaseModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
 
-    password1 = forms.CharField(
-        label="Password",
-        widget=forms.PasswordInput,
+    password = forms.CharField(
+        max_length=30,
+        min_length=8,
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "••••••••",
+            }
+        ),
     )
-    password2 = forms.CharField(
+    confirm_password = forms.CharField(
         label="Confirm password",
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "••••••••",
+            }
+        ),
     )
 
     class Meta:
         model = User
         fields = [
+            "first_name",
+            "last_name",
             "email",
-            "date_of_birth",
+            "country_code",
+            "mobile_number",
+            "image",
+            "password",
         ]
+        labels = {
+            "email": "Email",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "mobile_number": "Phone Number",
+            "image": "Profile Picture",
+        }
+        widgets = {
+            "email": forms.EmailInput(
+                attrs={
+                    "placeholder": "you@example.com",
+                }
+            ),
+            "mobile_number": forms.TextInput(
+                attrs={
+                    "class": PHONE_NUMBER_CSS_CLASS,
+                    "placeholder": "15XXXXXXXX",
+                },
+            ),
+            "image": forms.FileInput(
+                attrs={
+                    "class": "hidden",
+                    "id": "image-input",
+                    "onchange": "showImage(event)",
+                }
+            )
+        }
 
-    def clean_password2(self):
+    def clean_confirm_password(self):
         # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
+        password = self.cleaned_data.get("password")
+        confirm_password = self.cleaned_data.get("confirm_password")
+        if password and confirm_password and password != confirm_password:
             raise ValidationError("Passwords don't match")
-        return password2
+        return confirm_password
 
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
+        user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
         return user
@@ -72,7 +113,6 @@ class UserChangeForm(forms.ModelForm):
 class UserLoginForm(BaseForm):
 
     email = forms.EmailField(
-        label_suffix="",
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "you@example.com",
@@ -82,7 +122,6 @@ class UserLoginForm(BaseForm):
     password = forms.CharField(
         max_length=30,
         min_length=8,
-        label_suffix="",
         widget=forms.PasswordInput(
             attrs={
                 "placeholder": "••••••••",

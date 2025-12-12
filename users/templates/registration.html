@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block favicon %}
+  <link rel="shortcut icon" href="{% static "base/images/favicon_green_leaf.png" %}" type="image/x-icon">
+{% endblock favicon %}
+
+{% block title %}
+  <title>Login - GreenLeaf</title>
+{% endblock title %}
+
+{% block content %}
+
+  <!-- Registration Form -->
+    <main class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Create Account</h1>
+                <p class="text-gray-600 dark:text-gray-400 mb-8">Join 🌿 to start planting</p>
+
+                <form class="space-y-4" method="post" action="#" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div id="formError" class="mb-4 p-3 rounded-lg bg-red-100 text-red-700 border border-red-300 text-sm">
+                        {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="grid grid-cols-2 gap-4">
+
+                        <!-- first_name -->
+                        <div>
+                            {% if form.first_name.errors %}
+                                <p id="emailError" class="text-red-600 text-sm mt-1">
+                                    {{form.first_name.errors}}
+                                </p>
+                            {% endif %}
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.first_name.label_tag}}</label>
+                            {{form.first_name}}
+                        </div>
+
+                        <!-- last_name -->
+                        <div>
+                            {% if form.last_name.errors %}
+                                <p id="emailError" class="text-red-600 text-sm mt-1">
+                                    {{form.last_name.errors}}
+                                </p>
+                            {% endif %}
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.last_name.label_tag}}</label>
+                            {{form.last_name}}
+                        </div>
+                    </div>
+
+                    <!-- email -->
+                    <div>
+                        {% if form.email.errors %}
+                            <p id="emailError" class="text-red-600 text-sm mt-1">
+                                {{form.email.errors}}
+                            </p>
+                        {% endif %}
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.email.label_tag}}</label>
+                        {{form.email}}
+                    </div>
+
+                    <!-- mobile_number -->
+                    <div>
+                        {% if form.mobile_number.errors %}
+                            <p id="emailError" class="text-red-600 text-sm mt-1">
+                                {{form.mobile_number.errors}}
+                            </p>
+                        {% endif %}
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.mobile_number.label_tag}}</label>
+                        <div class="flex gap-2">
+                            <select class="w-20 px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <option>+1</option>
+                                <option>+44</option>
+                                <option>+91</option>
+                                <option>+61</option>
+                            </select>
+                            {{form.mobile_number}}
+                        </div>
+                    </div>
+
+                    <!-- Profile Picture -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.image.label_tag}}</label>
+                        <div id="upload-box"
+                            onclick="document.getElementById('image-input').click()"
+                            class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center cursor-pointer hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-gray-700 transition relative">
+                             {{form.image}}
+
+                            <!-- Default content -->
+                            <div id="upload-content">
+                                <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Click to upload</p>
+                            </div>
+
+                            <!-- Image preview -->
+                            <img id="preview-img"
+                                class="hidden w-full h-48 object-cover rounded-lg shadow cursor-pointer" />
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        {% if form.password.errors %}
+                            <p class="text-red-600 text-sm mt-1">
+                                {{form.password.errors}}
+                            </p>
+                        {% endif %}
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.password.label_tag}}</label>
+                        {{form.password}}
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        {% if form.confirm_password.errors %}
+                            <p class="text-red-600 text-sm mt-1">
+                                {{form.confirm_password.errors}}
+                            </p>
+                        {% endif %}
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.confirm_password.label_tag}}</label>
+                        {{form.confirm_password}}
+                    </div>
+
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition duration-200">Create Account</button>
+                </form>
+
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-300 dark:border-gray-600"></div></div>
+                    <div class="relative flex justify-center text-sm"><span class="px-2 bg-white dark:bg-gray-800 text-gray-500">Or sign up with</span></div>
+                </div>
+
+                <!-- Google Sign up -->
+                {% include "login_with_google.html" with text="Sign up with Google" %}
+
+                <p class="mt-6 text-center text-gray-600 dark:text-gray-400">
+                    Already have an account? <a href="{% url "users:user_login" %}" class="text-emerald-600 hover:text-emerald-700 font-semibold">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+
+{% endblock content %}
+
+{% block js_script %}
+    <script>
+        function showImage(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('preview-img');
+            const content = document.getElementById('upload-content');
+
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.classList.remove('hidden'); // show image
+                content.classList.add('hidden');    // hide default icon + text
+            }
+        }
+    </script>
+
+
+{% endblock js_script %}
