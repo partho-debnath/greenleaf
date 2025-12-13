@@ -48,7 +48,7 @@ class UserModelAdmin(BaseUserAdmin):
                     "first_name",
                     "last_name",
                     "address",
-                    "country_code",
+                    # "country_code",
                     "mobile_number",
                     "gender",
                     "date_of_birth",
@@ -110,7 +110,7 @@ class UserModelAdmin(BaseUserAdmin):
                 "classes": ["wide"],  # for css
                 "fields": [
                     "address",
-                    "country_code",
+                    # "country_code",
                     "mobile_number",
                     "gender",
                     "date_of_birth",
@@ -133,7 +133,7 @@ class UserModelAdmin(BaseUserAdmin):
         ),
     ]
     autocomplete_fields = [
-        "country_code",
+        # "country_code",
     ]
 
     @admin.display(description="image")

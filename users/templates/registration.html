@@ -18,7 +18,7 @@
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Create Account</h1>
                 <p class="text-gray-600 dark:text-gray-400 mb-8">Join 🌿 to start planting</p>
 
-                <form class="space-y-4" method="post" action="#" enctype="multipart/form-data">
+                <form class="space-y-4" method="post" action="{% url 'users:user_registration' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% if form.non_field_errors %}
                         <div id="formError" class="mb-4 p-3 rounded-lg bg-red-100 text-red-700 border border-red-300 text-sm">
@@ -28,22 +28,26 @@
 
                     <div class="grid grid-cols-2 gap-4">
 
-                        <!-- first_name -->
+                        <!-- First Name -->
                         <div>
                             {% if form.first_name.errors %}
-                                <p id="emailError" class="text-red-600 text-sm mt-1">
-                                    {{form.first_name.errors}}
+                                <p id="first_name_error" class="text-red-600 text-sm mt-1">
+                                    {% for error_line in form.first_name %}
+                                        {{error_line}}
+                                    {% endfor %}
                                 </p>
                             {% endif %}
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.first_name.label_tag}}</label>
                             {{form.first_name}}
                         </div>
 
-                        <!-- last_name -->
+                        <!-- Last Name -->
                         <div>
                             {% if form.last_name.errors %}
-                                <p id="emailError" class="text-red-600 text-sm mt-1">
-                                    {{form.last_name.errors}}
+                                <p id="last_name_error" class="text-red-600 text-sm mt-1">
+                                    {% for error_line in form.last_name.errors %}
+                                        {{error_line}}
+                                    {% endfor %}
                                 </p>
                             {% endif %}
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.last_name.label_tag}}</label>
@@ -51,45 +55,57 @@
                         </div>
                     </div>
 
-                    <!-- email -->
+                    <!-- Email -->
                     <div>
                         {% if form.email.errors %}
-                            <p id="emailError" class="text-red-600 text-sm mt-1">
-                                {{form.email.errors}}
+                            <p id="email_error" class="text-red-600 text-sm mt-1 animate-wiggle">
+                                {% for error_line in form.email.errors %}
+                                    {{error_line}}
+                                {% endfor %}
                             </p>
                         {% endif %}
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.email.label_tag}}</label>
                         {{form.email}}
                     </div>
 
-                    <!-- mobile_number -->
+                    <!-- Mobile Number -->
                     <div>
                         {% if form.mobile_number.errors %}
-                            <p id="emailError" class="text-red-600 text-sm mt-1">
-                                {{form.mobile_number.errors}}
+                            <p id="mobile_number_error" class="text-red-600 text-sm mt-1">
+                                {% for error_line in form.mobile_number.errors %}
+                                    {{error_line}}
+                                {% endfor %}
                             </p>
                         {% endif %}
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.mobile_number.label_tag}}</label>
+                        
                         <div class="flex gap-2">
-                            <select class="w-20 px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <!-- <select class="w-20 px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none">
                                 <option>+1</option>
                                 <option>+44</option>
                                 <option>+91</option>
                                 <option>+61</option>
-                            </select>
+                            </select> -->
                             {{form.mobile_number}}
                         </div>
                     </div>
 
                     <!-- Profile Picture -->
                     <div>
+                        {% if form.image.errors %}
+                            <p id="image_error" class="text-red-600 text-sm mt-1">
+                                {% for error_line in form.image.errors %}
+                                    {{error_line}}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.image.label_tag}}</label>
                         <div id="upload-box"
                             onclick="document.getElementById('image-input').click()"
                             class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center cursor-pointer hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-gray-700 transition relative">
                              {{form.image}}
 
-                            <!-- Default content -->
+                            <!-- Default Content -->
                             <div id="upload-content">
                                 <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -99,7 +115,7 @@
                                 <p class="text-sm text-gray-600 dark:text-gray-400">Click to upload</p>
                             </div>
 
-                            <!-- Image preview -->
+                            <!-- Image Preview -->
                             <img id="preview-img"
                                 class="hidden w-full h-48 object-cover rounded-lg shadow cursor-pointer" />
                         </div>
@@ -108,8 +124,10 @@
                     <!-- Password -->
                     <div>
                         {% if form.password.errors %}
-                            <p class="text-red-600 text-sm mt-1">
-                                {{form.password.errors}}
+                            <p id="password_error" class="text-red-600 text-sm mt-1">
+                                {% for error_line in form.password.errors %}
+                                    {{error_line}}
+                                {% endfor %}
                             </p>
                         {% endif %}
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.password.label_tag}}</label>
@@ -119,8 +137,10 @@
                     <!-- Confirm Password -->
                     <div>
                         {% if form.confirm_password.errors %}
-                            <p class="text-red-600 text-sm mt-1">
-                                {{form.confirm_password.errors}}
+                            <p id="confirm_password_error" class="text-red-600 text-sm mt-1 animate-wiggle">
+                                {% for error_line in form.confirm_password.errors %}
+                                    {{error_line}}
+                                {% endfor %}
                             </p>
                         {% endif %}
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{form.confirm_password.label_tag}}</label>
@@ -135,7 +155,7 @@
                     <div class="relative flex justify-center text-sm"><span class="px-2 bg-white dark:bg-gray-800 text-gray-500">Or sign up with</span></div>
                 </div>
 
-                <!-- Google Sign up -->
+                <!-- Google Sign Up -->
                 {% include "login_with_google.html" with text="Sign up with Google" %}
 
                 <p class="mt-6 text-center text-gray-600 dark:text-gray-400">

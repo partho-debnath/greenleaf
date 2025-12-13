@@ -35,17 +35,16 @@ class User(AbstractBaseUser, TimestampMixin, PermissionsMixin):
         max_length=255,
         unique=True,
     )
-    country_code = models.ForeignKey(
-        "CountryCode",
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        related_name="users",
-    )
+    # country_code = models.ForeignKey(
+    #     "CountryCode",
+    #     on_delete=models.SET_NULL,
+    #     blank=True,
+    #     null=True,
+    #     related_name="users",
+    # )
     mobile_number = models.CharField(
         max_length=15,
-        blank=True,
-        null=True,
+        unique=True,
     )
     gender = models.CharField(
         max_length=7,

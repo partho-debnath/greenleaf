@@ -34,7 +34,7 @@ class UserCreationForm(BaseModelForm):
             "first_name",
             "last_name",
             "email",
-            "country_code",
+            # "country_code",
             "mobile_number",
             "image",
             "password",
@@ -55,7 +55,7 @@ class UserCreationForm(BaseModelForm):
             "mobile_number": forms.TextInput(
                 attrs={
                     "class": PHONE_NUMBER_CSS_CLASS,
-                    "placeholder": "15XXXXXXXX",
+                    "placeholder": "+88015XXXXXXXX",
                 },
             ),
             "image": forms.FileInput(
