@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        width: 75%;
+        max-width: 1500px;
+        margin: 0 auto;
+        padding-top: 20px;
+        color: white;
+        background-color: #000000e0;
+
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", "Geneva", "Verdana", "sans-serif";
+      }
+
+      .main-container {
+        border: 1px solid #3d3d3c;
+        padding: 10px 15px;
+        background-image: linear-gradient(
+          to bottom right,
+          #021127b7,
+          #02021d6b
+        );
+        border-radius: 20px;
+      }
+      .title {
+        text-align: center;
+        font-size: 40px;
+      }
+      .header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .logo {
+        width: 80px;
+        height: 80px;
+      }
+      .logo-text {
+        margin-left: 10px;
+        font-size: 40px;
+        font-weight: 300;
+      }
+
+      .midcartContainer {
+        padding: 10px 30px;
+      }
+
+      .pcontainer {
+        padding: 5px 10px;
+      }
+      a {
+        text-decoration: none;
+        color: white;
+      }
+      .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        text-align: center;
+        margin: 50px auto;
+      }
+      .verifyButton {
+        background: #37d617bb;
+        width: 100%;
+        padding: 15px 0px;
+        border-radius: 5px;
+        cursor: pointer;
+        border: 1px solid transparent;
+      }
+      .verifyButton:hover {
+        background: #38e27ff8;
+        border: 1px solid rgb(87, 223, 139);
+      }
+
+      @media screen and (max-width: 576px) {
+        body {
+          width: 90%;
+        }
+        p {
+          font-size: 14px;
+        }
+        .midcartContainer {
+          padding: 10px 10px;
+        }
+        .title {
+          font-size: 25px;
+          margin-bottom: 50px;
+        }
+        .btn {
+          width: 80%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="header">
+        <img
+          class="logo"
+          src="{% static 'base/images/favicon_green_leaf.png' %}"
+          alt="GreenLeaf"
+        />
+        <h2 class="logo-text">GreenLeaf 🌿</h2>
+      </div>
+      <hr />
+      <div class="midcartContainer">
+        <p class="title">Verification Required</p>
+        <h3>Hello {{ full_name }}</h3>
+        <div class="pcontainer">
+          <p style="font-size: 18px">Welcome to the GreenLeaf 🌿</p>
+          <p>
+            We welcome you to GreenLeaf. Please verify your email to
+            active your account.
+          </p>
+          {% if is_otp is False %}
+          <a target="_blank" href="{{ otp_or_url }}">
+            <p class="btn">
+              <span class="verifyButton">Verify Email</span>
+            </p>
+          </a>
+          {% else %}
+          <strong>{{ otp_or_url }}</strong>
+          {% endif %}
+          <p>
+            You can not active your account without completing this verification
+            process.
+          </p>
+        </div>
+        <div style="margin-top: 50px">
+          <p>Regards</p>
+          <p>GreenLeaf 🌿</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

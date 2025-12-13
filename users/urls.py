@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    AccountActivationView,
     UserLoginView,
     UserRegistrationView,
 )
@@ -13,4 +14,9 @@ urlpatterns = [
         view=UserRegistrationView.as_view(),
         name="user_registration",
     ),
+    path(
+        route="<str:token>/<str:uid>/active-account/",
+        view=AccountActivationView.as_view(),
+        name="activate_account",
+    )
 ]
