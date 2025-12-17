@@ -39,6 +39,9 @@ class Category(TimestampMixin):
             ),
         ]
 
+    def __str__(self):
+        return self.name
+
 
 class Product(TimestampMixin):
     name = models.CharField(

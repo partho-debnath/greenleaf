@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block favicon %}
+  <link rel="shortcut icon" href="{% static "base/images/favicon_green_leaf.png" %}" type="image/x-icon">
+{% endblock favicon %}
+
+{% block title %}
+  <title>GreenLeaf List</title>
+{% endblock title %}
+
+{% block content %}
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid md:grid-cols-5 gap-6">
+            <!-- Filters -->
+            <div class="md:col-span-1">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6 sticky top-24">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Filters</h3>
+
+                    <div class="space-y-6">
+                        <!-- Category Filter -->
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Category</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-emerald-600">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Saplings</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-emerald-600">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Seeds</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-emerald-600">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Fruit Trees</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Price Filter -->
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Price Range</h4>
+                            <input type="range" min="0" max="500" class="w-full">
+                            <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400 mt-2">
+                                <span>$0</span>
+                                <span>$500+</span>
+                            </div>
+                        </div>
+
+                        <!-- Rating Filter -->
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Rating</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-emerald-600">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">4★ & Up</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-emerald-600">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">3★ & Up</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="w-full mt-6 px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900 font-semibold rounded-lg transition">Reset Filters</button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="md:col-span-4">
+                <!-- Sort Options -->
+                <div class="flex justify-between items-center mb-6">
+                    <p class="text-gray-600 dark:text-gray-400">Showing {{paginator.count}} product{{paginator.count|pluralize}}</p>
+                    <select class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <option>Sort by: Newest</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Most Popular</option>
+                        <option>Best Rated</option>
+                    </select>
+                </div>
+
+                <!-- Tree Cards -->
+                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                    {% for tree in page_obj.object_list %}
+                        <!-- Tree Card -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group">
+                            <div class="bg-emerald-100 dark:bg-emerald-900 h-48 flex items-center justify-center overflow-hidden">
+                                
+                                <img class="w-24 h-24 text-emerald-600 rounded-xl group-hover:scale-110 transition" fill="currentColor" src="{% if tree.thumbnail %}{{tree.thumbnail.url}} {% endif %}" alt="{{tree.name}}" srcset="">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">{{tree.name}}</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{tree.description|truncatewords:10}}</p>
+                                
+                                <div class="flex items-center gap-2 mb-4">
+                                    <div class="flex gap-0.5">
+                                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    </div>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">(245)</span>
+                                </div>
+
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-2xl font-bold text-emerald-600">$29.99</span>
+                                    <span class="text-sm text-gray-500 line-through">$39.99</span>
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <a href="{% url "trees:tree_details" tree.slug %}" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition text-center">View Details</a>
+                                    <button class="flex-1 px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900 font-semibold rounded-lg transition">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% comment %}
+                    <!-- Tree Card 1 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group">
+                        <div class="bg-emerald-100 dark:bg-emerald-900 h-48 flex items-center justify-center overflow-hidden">
+                            <svg class="w-24 h-24 text-emerald-600 group-hover:scale-110 transition" fill="currentColor" viewBox="0 0 20 20"><path d="M2 4a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H3a1 1 0 01-1-1V4z"></path></svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Oak Tree Sapling</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Mature strong wood tree, perfect for shading and timber</p>
+                            
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="flex gap-0.5">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">(245)</span>
+                            </div>
+
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-emerald-600">$29.99</span>
+                                <span class="text-sm text-gray-500 line-through">$39.99</span>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <a href="tree-details.html" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition text-center">View Details</a>
+                                <button class="flex-1 px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900 font-semibold rounded-lg transition">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tree Card 2 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group">
+                        <div class="bg-emerald-100 dark:bg-emerald-900 h-48 flex items-center justify-center overflow-hidden">
+                            <svg class="w-24 h-24 text-emerald-600 group-hover:scale-110 transition" fill="currentColor" viewBox="0 0 20 20"><path d="M2 4a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H3a1 1 0 01-1-1V4z"></path></svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Maple Tree Seeds (Pack of 50)</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Beautiful autumn colors, quick germination rate 85%</p>
+                            
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="flex gap-0.5">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">(189)</span>
+                            </div>
+
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-emerald-600">$24.99</span>
+                                <span class="text-sm text-gray-500 line-through">$34.99</span>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <a href="tree-details.html" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition text-center">View Details</a>
+                                <button class="flex-1 px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900 font-semibold rounded-lg transition">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tree Card 3 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group">
+                        <div class="bg-emerald-100 dark:bg-emerald-900 h-48 flex items-center justify-center overflow-hidden">
+                            <svg class="w-24 h-24 text-emerald-600 group-hover:scale-110 transition" fill="currentColor" viewBox="0 0 20 20"><path d="M2 4a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H3a1 1 0 01-1-1V4z"></path></svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Pine Tree Sapling</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Evergreen beauty, excellent for windbreaks and privacy</p>
+                            
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="flex gap-0.5">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">(312)</span>
+                            </div>
+
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-emerald-600">$34.99</span>
+                                <span class="text-sm text-gray-500 line-through">$44.99</span>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <a href="tree-details.html" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition text-center">View Details</a>
+                                <button class="flex-1 px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900 font-semibold rounded-lg transition">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Repeat for 3 more cards with similar structure -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group">
+                        <div class="bg-emerald-100 dark:bg-emerald-900 h-48 flex items-center justify-center overflow-hidden">
+                            <svg class="w-24 h-24 text-emerald-600 group-hover:scale-110 transition" fill="currentColor" viewBox="0 0 20 20"><path d="M2 4a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H3a1 1 0 01-1-1V4z"></path></svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Birch Tree Sapling</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">White bark beauty, native to cooler climates</p>
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="flex gap-0.5">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">(87)</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-emerald-600">$27.99</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="tree-details.html" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition text-center">View Details</a>
+                                <button class="flex-1 px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900 font-semibold rounded-lg transition">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group">
+                        <div class="bg-emerald-100 dark:bg-emerald-900 h-48 flex items-center justify-center overflow-hidden">
+                            <svg class="w-24 h-24 text-emerald-600 group-hover:scale-110 transition" fill="currentColor" viewBox="0 0 20 20"><path d="M2 4a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H3a1 1 0 01-1-1V4z"></path></svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Apple Tree Seeds (Pack of 30)</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Fruit-bearing tree, 70% germination rate guaranteed</p>
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="flex gap-0.5">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">(156)</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-emerald-600">$19.99</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="tree-details.html" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition text-center">View Details</a>
+                                <button class="flex-1 px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900 font-semibold rounded-lg transition">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden group">
+                        <div class="bg-emerald-100 dark:bg-emerald-900 h-48 flex items-center justify-center overflow-hidden">
+                            <svg class="w-24 h-24 text-emerald-600 group-hover:scale-110 transition" fill="currentColor" viewBox="0 0 20 20"><path d="M2 4a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H3a1 1 0 01-1-1V4z"></path></svg>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Cedar Tree Sapling</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Aromatic wood, resistant to decay and insects</p>
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="flex gap-0.5">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">(203)</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-emerald-600">$39.99</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="tree-details.html" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition text-center">View Details</a>
+                                <button class="flex-1 px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900 font-semibold rounded-lg transition">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endcomment %}
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center gap-2">
+                    <button class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">Previous</button>
+                    <button class="px-4 py-2 bg-emerald-600 text-white rounded-lg">1</button>
+                    <button class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">2</button>
+                    <button class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">3</button>
+                    <button class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">Next</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock content %}
