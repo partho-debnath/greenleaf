@@ -18,7 +18,11 @@ class ProductListView(generic.ListView):
 
 
 class ProductDetailsView(generic.DetailView):
-    template_name = "tree_list.html"
+    template_name = "tree_details.html"
+    context_object_name = "tree"
     queryset = Product.objects.defer("thumbnail").select_related(
-        "category"
+        "category",
+    ).prefetch_related(
+        "images",
+        "specifications",
     ).order_by("id").all()
