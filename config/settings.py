@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "users.apps.UsersConfig",
     "trees.apps.TreesConfig",
+    "reviews.apps.ReviewsConfig",
 ]
 
 MIDDLEWARE = [
