@@ -1,3 +1,4 @@
+from math import ceil
 from django.db import models
 from django.utils.text import slugify
 
@@ -97,9 +98,18 @@ class Product(TimestampMixin):
     is_available = models.BooleanField(
         default=True,
     )
+    rating_sum = models.PositiveIntegerField(default=0)
+    rating_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
+
+    @property
+    def average_rating(self) -> int:
+        if self.rating_count > 0:
+            return ceil(self.rating_sum / self.rating_count)
+        else:
+            return 0
 
     def save(self, *args, **kwargs):
         if not self.slug:
