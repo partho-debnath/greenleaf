@@ -45,6 +45,27 @@ class Category(TimestampMixin):
         return self.name
 
 
+class Discount(TimestampMixin):
+
+    class DiscountType(models.TextChoices):
+        PERCENT = "percent", "%"
+        FIXED = "fixed", "Tk"
+
+    name = models.CharField(max_length=30)
+    discount_type = models.CharField(
+        choices=DiscountType.choices,
+        max_length=7,
+    )
+    value = models.DecimalField(
+        max_digits=3,
+        decimal_places=2,
+        validators=[MinValueValidator(0),],
+    )
+    is_active = models.BooleanField(
+        default=True,
+    )
+
+
 class Product(TimestampMixin):
     name = models.CharField(
         max_length=200,
@@ -64,6 +85,13 @@ class Product(TimestampMixin):
         max_digits=10,
         decimal_places=2,
         db_index=True,
+    )
+    discount = models.ForeignKey(
+        Discount,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="products"
     )
     stock = models.PositiveIntegerField(
         default=0,
@@ -177,22 +205,3 @@ class ProductImage(TimestampMixin):
     class Meta:
         ordering = ["sort_order", "id"]
 
-
-class Discount(TimestampMixin):
-
-    class DiscountType(models.TextChoices):
-        PERCENT = "percent", "%"
-        FIXED = "fixed", "Tk"
-
-    discount_type = models.CharField(
-        choices=DiscountType.choices,
-        max_length=7,
-    )
-    value = models.DecimalField(
-        max_digits=3,
-        decimal_places=2,
-        validators=[MinValueValidator(0),],
-    )
-    is_active = models.BooleanField(
-        default=True,
-    )
