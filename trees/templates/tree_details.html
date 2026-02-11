@@ -48,9 +48,13 @@
                 <!-- Price -->
                 <div class="mb-8">
                     <div class="flex items-baseline gap-4">
-                        <span class="text-4xl font-bold text-emerald-600">$29.99</span>
-                        <span class="text-xl text-gray-500 line-through">$39.99</span>
-                        <span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-full font-semibold">25% Off</span>
+                        {% if tree.discount %}
+                            <span class="text-4xl font-bold text-emerald-600">{{tree.get_discount_price}}</span>
+                            <span class="text-xl text-gray-500 line-through">{{tree.price}}</span>
+                            <span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-full font-semibold">{{tree.discount.name}}</span>
+                        {% else %}
+                            <span class="text-4xl font-bold text-emerald-600">{{tree.price}}</span>
+                        {% endif %}
                     </div>
                 </div>
 

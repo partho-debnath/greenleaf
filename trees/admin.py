@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import (
     Category,
+    Discount,
     Product,
     ProductSpecification,
     ProductImage,
@@ -22,6 +23,14 @@ class CategoryModelAdmin(admin.ModelAdmin):
     ]
 
 
+@admin.register(Discount)
+class DiscountModelAdmin(admin.ModelAdmin):
+    list_display = (
+        "name", "discount_type", "value", "is_active", "created_at",
+    )
+    search_fields = ("name", )
+
+
 class ProductSpecificationModelAdminInline(admin.TabularInline):
     model = ProductSpecification
     extra = 5
@@ -39,13 +48,14 @@ class ProductModelAdmin(admin.ModelAdmin):
         ProductImageInlineModelAdmin,
     ]
     list_display = [
-        "name", "category", "price", "stock",
+        "name", "category", "price", "stock", "discount",
         "scientific_name", "growth_time", "is_available"
     ]
     list_filter = [
-        "category",
+        "category", "discount",
     ]
     search_fields = [
         "name", "category", "description",
         "scientific_name",
     ]
+    autocomplete_fields = ("discount",)

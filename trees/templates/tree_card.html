@@ -27,8 +27,15 @@
         </div>
 
         <div class="flex items-center justify-between mb-4">
-            <span class="text-2xl font-bold text-emerald-600">$29.99</span>
-            <span class="text-sm text-gray-500 line-through">$39.99</span>
+            
+            {% if tree.discount %}
+                <span class="text-2xl font-bold text-emerald-600">{{tree.get_discount_price}}</span>
+                <span class="text-sm text-gray-500 line-through">
+                    {{tree.price}}
+                </span>
+            {% else %}
+                <span class="text-2xl font-bold text-emerald-600">{{tree.price}}</span>
+            {% endif %}
         </div>
 
         <div class="flex gap-2">

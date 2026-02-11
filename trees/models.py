@@ -57,13 +57,16 @@ class Discount(TimestampMixin):
         max_length=7,
     )
     value = models.DecimalField(
-        max_digits=3,
+        max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(0),],
     )
     is_active = models.BooleanField(
         default=True,
     )
+
+    def __str__(self):
+        return self.name
 
 
 class Product(TimestampMixin):
@@ -139,6 +142,15 @@ class Product(TimestampMixin):
 
     def __str__(self):
         return self.name
+
+    def get_discount_price(self):
+
+        if discount_obj := self.discount:
+            if discount_obj.discount_type == Discount.DiscountType.PERCENT:
+                discount = self.price * (discount_obj.value / 100)
+            else:
+                discount = discount_obj.value
+            return self.price - discount
 
     # @property
     # def average_rating(self) -> int:
