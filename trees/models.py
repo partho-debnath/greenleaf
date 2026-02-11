@@ -1,6 +1,7 @@
 from math import ceil
 from django.db import models
 from django.utils.text import slugify
+from django.core.validators import MinValueValidator
 
 from base.models import TimestampMixin
 
@@ -97,19 +98,26 @@ class Product(TimestampMixin):
     )
     is_available = models.BooleanField(
         default=True,
+        db_index=True,
     )
     rating_sum = models.PositiveIntegerField(default=0)
     rating_count = models.PositiveIntegerField(default=0)
+    average_rating = models.DecimalField(
+        db_default=0.00,
+        max_digits=3,
+        decimal_places=2,
+        db_index=True,
+    )
 
     def __str__(self):
         return self.name
 
-    @property
-    def average_rating(self) -> int:
-        if self.rating_count > 0:
-            return ceil(self.rating_sum / self.rating_count)
-        else:
-            return 0
+    # @property
+    # def average_rating(self) -> int:
+    #     if self.rating_count > 0:
+    #         return ceil(self.rating_sum / self.rating_count)
+    #     else:
+    #         return 0
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -168,3 +176,23 @@ class ProductImage(TimestampMixin):
 
     class Meta:
         ordering = ["sort_order", "id"]
+
+
+class Discount(TimestampMixin):
+
+    class DiscountType(models.TextChoices):
+        PERCENT = "percent", "%"
+        FIXED = "fixed", "Tk"
+
+    discount_type = models.CharField(
+        choices=DiscountType.choices,
+        max_length=7,
+    )
+    value = models.DecimalField(
+        max_digits=3,
+        decimal_places=2,
+        validators=[MinValueValidator(0),],
+    )
+    is_active = models.BooleanField(
+        default=True,
+    )
